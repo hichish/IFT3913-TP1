@@ -28,22 +28,17 @@ public class TLOC {
                     continue; // Ignorer les lignes vides
                 }
 
-                if (line.startsWith("/*")) {
+                   if (line.startsWith("/*")) {
                     inCommentBlock = true;
-                    continue;
                 }
-
-                if (inCommentBlock) {
-                    if (line.contains("*/")) {
-                        inCommentBlock = false;
-                        line = line.substring(line.indexOf("*/") + 2).trim();
-                    } else {
-                        continue; // Ignorer les lignes à l'intérieur des blocs de commentaires
-                    }
-                }
-
+    
                 if (!inCommentBlock && !line.startsWith("//")) {
                     count++;
+                }
+    
+                if (line.contains("*/")) {
+                    inCommentBlock = false;
+                    line = line.substring(line.indexOf("*/") + 2).trim();
                 }
             }
         }
