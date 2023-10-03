@@ -6,6 +6,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TLOC",
+            "request": "launch",
+            "mainClass": "TLOC"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
