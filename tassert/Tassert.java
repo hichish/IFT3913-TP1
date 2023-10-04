@@ -17,7 +17,7 @@ public class Tassert
             String line;
             int result = 0;
 
-            // Read the file line by line
+            // Read the filee line by line
             while ((line = bufferedReader.readLine()) != null) {
                 line = line.trim();
                 if (line.startsWith("assert") || line.startsWith("fail")) {
