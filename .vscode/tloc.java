@@ -4,8 +4,11 @@ import java.io.IOException;
 
 public class TLOC {
     public static void main(String[] args) {
-        String filePath = "test.java"; // Remplacez "VotreClasse.java" par le chemin de votre fichier source
-        
+        if (args.length != 1) {
+            System.out.println("Utilisation : java tloc <chemin_vers_fichier>");
+            System.exit(1);
+        }
+        String filePath = args[0];
         try {
             int linesOfCode = countLinesOfCode(filePath);
             System.out.println(linesOfCode);
