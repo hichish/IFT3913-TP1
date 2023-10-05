@@ -2,16 +2,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class tloc {
+public class TLOC {
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Utilisation : java tloc <chemin_vers_fichier>");
-            System.exit(1);
-        }
-        String filePath = args[0];
+        String filePath = "test.java"; // Remplacez "VotreClasse.java" par le chemin de votre fichier source
+        
         try {
             int linesOfCode = countLinesOfCode(filePath);
-            System.out.println(linesOfCode);
+            System.out.println("Nombre de lignes de code (sans commentaires) : " + linesOfCode);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,17 +28,22 @@ public class tloc {
                     continue; // Ignorer les lignes vides
                 }
 
-                   if (line.startsWith("/*")) {
+                if (line.startsWith("/*")) {
                     inCommentBlock = true;
+                    continue;
                 }
-    
+
+                if (inCommentBlock) {
+                    if (line.contains("*/")) {
+                        inCommentBlock = false;
+                        line = line.substring(line.indexOf("*/") + 2).trim();
+                    } else {
+                        continue; // Ignorer les lignes à l'intérieur des blocs de commentaires
+                    }
+                }
+
                 if (!inCommentBlock && !line.startsWith("//")) {
                     count++;
-                }
-    
-                if (line.contains("*/")) {
-                    inCommentBlock = false;
-                    line = line.substring(line.indexOf("*/") + 2).trim();
                 }
             }
         }
