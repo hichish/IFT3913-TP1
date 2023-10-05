@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class TLOC {
+public class tloc {
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Utilisation : java tloc <chemin_vers_fichier>");
