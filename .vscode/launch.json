@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TLS",
+            "request": "launch",
+            "mainClass": "tls.TLS",
+            "projectName": "IFT3913-TP1_f2e37dae"
+        },
+        {
+            "type": "java",
             "name": "TLOC",
             "request": "launch",
             "mainClass": "TLOC"

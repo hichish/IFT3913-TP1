@@ -7,34 +7,52 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 public class TLS {
     public static void main(String[] args) {
-        if (args.length != 1) {
+        if (args.length != 0) {
             System.err.println("Usage: java TLS <path_to_java_file>");
             System.exit(1);
         }
-        String filePath = args[0];
+        //String filePath = args[0];
+        String filePath = "TitleTest.java";
         try {
             // Calcul de tloc en utilisant la classe TLOC
-            tloc tlocExtractor = new tloc();
-            int tloc = tlocExtractor.countLinesOfCode(filePath);
+            // Run a java app in a separate system process
+            // Run a java app in a separate system process
+            Process proc = Runtime.getRuntime().exec("java -jar tloc/tloc.jar " + filePath);
+
+            // Then retrieve the process output
+            InputStream in = proc.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+
+            // Read and print the output of the process
+            while ((line = reader.readLine()) != null) {
+            System.out.println("Process Output: " + line);
+            }
+
+            // Wait for the process to complete and get the exit code
+            int exitCode = proc.waitFor();
+            System.out.println("Process exited with code: " + exitCode);
 
             // Calcul de tassert en utilisant la classe TASSERT
-            Tassert tassertExtractor = new Tassert();
-            int tassert = tassertExtractor.countAssertions(filePath);
-            float tcmp = (float) tloc / tassert;
+            //Tassert tassertExtractor = new Tassert();
+            //int tassert = tassertExtractor.countAssertions(filePath);
+            //float tcmp = (float) tloc / tassert;
             DecimalFormat df = new DecimalFormat("#.##"); // Deux décimales
             df.setRoundingMode(RoundingMode.DOWN); // Arrondi vers le bas
-            String formattedTcmp = df.format(tcmp);
+            //String formattedTcmp = df.format(tcmp);
             System.out.println(filePath);
              System.out.println(getPackageName(filePath));
             System.out.println(getClassName(filePath));
-            System.out.println(tloc);
-            System.out.println(tassert);
-            System.out.println(formattedTcmp  );
-        } catch (IOException e) {
+           // System.out.println(tloc);
+            //System.out.println(tassert);
+            //System.out.println(formattedTcmp  );
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

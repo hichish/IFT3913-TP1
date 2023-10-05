@@ -8,7 +8,7 @@ public class TLOC {
         
         try {
             int linesOfCode = countLinesOfCode(filePath);
-            System.out.println("Nombre de lignes de code (sans commentaires) : " + linesOfCode);
+            System.out.println(linesOfCode);
         } catch (IOException e) {
             e.printStackTrace();
         }
