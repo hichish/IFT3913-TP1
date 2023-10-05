@@ -1,11 +1,10 @@
-package com.udem;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 
-public class App 
+public class Tassert 
 {
     public static void main( String[] args ) {
         
@@ -18,7 +17,7 @@ public class App
             String line;
             int result = 0;
 
-            // Read the file line by line
+            // Read the filee line by line
             while ((line = bufferedReader.readLine()) != null) {
                 line = line.trim();
                 if (line.startsWith("assert") || line.startsWith("fail")) {
