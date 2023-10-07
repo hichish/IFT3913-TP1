@@ -9,7 +9,8 @@
             "name": "TropComp",
             "request": "launch",
             "mainClass": "tropComp.TropComp",
-            "projectName": "IFT3913-TP1_f2e37dae"
+            "projectName": "IFT3913-TP1_f2e37dae",
+            "args": "C:/Users/hiche/OneDrive/Bureau/IFT3913-TP1/projet 10 out_10.csv"
         },
         {
             "type": "java",

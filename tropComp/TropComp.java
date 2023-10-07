@@ -1,8 +1,10 @@
 package tropComp;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -19,16 +21,17 @@ public class TropComp {
     public static void main(String[] args) {
         
 
-        //File projectFolder = new File(args[0]);
-        File projectFolder = new File("projet");
+        File projectFolder = new File(args[0]);
+        
 
         iterateOverFolder(projectFolder);
 
-        rankFilesComplexity();
 
-        outputResult(getprintOutput(args));
+        
 
-        System.out.println(tlsResults);
+        outputResult(args, getprintOutput(args));
+
+       
 
     }
 
@@ -159,19 +162,88 @@ public class TropComp {
         }
     }
     private static boolean getprintOutput(String[] args) {
-        if (args.length == 2) {
-            fileToWriteTo = args[1];
+        if (args.length == 3) {
+            fileToWriteTo = args[2];
             return false;
         }
         return true;
     }
-    private static void outputResult(String[] args) {
-        int newTlocSize = (int) (tlocResults.size() * Integer.parseInt(args[1])); 
-        List<Integer> trimmedList = tlocResults.subList(0, newTlocSize);
+    private static void outputResult(String[] args, boolean printOutput) {
+        int newTlocSize = (int) (tlocResults.size() * (Float.parseFloat(args[1])/100)); 
+        List<Entry<File, Integer>> trimmedTlocList = tlocResults.subList(0, newTlocSize);
 
-        int newSize = (int) (tlocResults.size() * Integer.parseInt(args[1])); 
-        List<Integer> trimmedList = tlocResults.subList(0, newSize);
+        ArrayList<String> finalTlocList = new ArrayList<>();
+
+        for (Entry<File, Integer> tlocEntry: trimmedTlocList) {
+            finalTlocList.add(tlocEntry.getKey().getPath());
+        }
+
+        int newSize = (int) (tlsResults.size() * (Float.parseFloat(args[1])/100)); 
+        List<Entry<File, Double>> trimmedTlsList = tlsResults.subList(0, newSize);
+        
+        ArrayList<String> finalList = new ArrayList<>();
+
+        for (Entry<File, Double> tlsEntry: trimmedTlsList) {
+            if (finalTlocList.contains(tlsEntry.getKey().getPath())) {
+                finalList.add(tlsEntry.getKey().getPath());
+            }
+        }
+
+       for (String ab: finalList) {
+        outputResult(printOutput, ab);
+       }
+
 
     }
+    private static String getCsvLine(String filePath) throws IOException{
+        return filePath + ", " + getClassName(filePath) + ", " + getPackageName(filePath) + ", " + getTloc(filePath) + ", " + getTassert(filePath) + ", " +  getTls(filePath);
+     }
+     private static String getPackageName(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("package ")) {
+                    // Trouvé une déclaration de paquet, extrayons le nom du paquet
+                    return line.substring(8, line.length() - 1).trim(); // Ignorer le point-virgule à la fin
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ""; // Si aucune déclaration de paquet n'est trouvée, retournez une chaîne vide
+    }
+    private static String getClassName(String filePath) {
+        String fileName = new File(filePath).getName();
+        if (fileName.endsWith(".java")) {
+            fileName = fileName.substring(0, fileName.lastIndexOf(".java"));
+        }
+        return fileName;
+    }
+     private static void outputResult(boolean printOutput, String filePath) {
+        try {
+            if (printOutput) {
+            
+                System.out.println(getCsvLine(filePath));
+            
+        }
+            else {
+            // Create a FileWriter object with the specified file path
+            FileWriter fileWriter = new FileWriter(fileToWriteTo);
 
+            // Create a BufferedWriter to efficiently write characters to the file
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            // Write data to the file
+            bufferedWriter.write(getCsvLine(filePath));
+            bufferedWriter.newLine(); 
+
+            bufferedWriter.close();
+            }
+        } catch (Exception e) {
+            
+        }
+        
+
+    }
 }
