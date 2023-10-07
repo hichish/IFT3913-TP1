@@ -34,7 +34,7 @@
  *
  */
 
-package org.jfree.chart.title;
+package test;
 
 import org.jfree.chart.api.HorizontalAlignment;
 import org.jfree.chart.api.RectangleEdge;
